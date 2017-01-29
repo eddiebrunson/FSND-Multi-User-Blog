@@ -90,15 +90,16 @@ def render_post(response, post):
 
 # Add post and likes db code here
 
+
 class MainPage(BlogHandler):
 
-   def get(self):
-       if self.user:
-        self.render('front.html',
-                    posts=posts,
-                    loggedIn=self.user)
-    else:
-        self.redirect('/signup')
+    def get(self):
+        if self.user:
+            self.render('front.html',
+                        posts=posts,
+                        loggedIn=self.user)
+        else:
+            self.redirect('/signup')
 
 #######################################
 ##### USER SECURITY & VALIDATIONS #####
@@ -200,7 +201,8 @@ class Post(db.Model):
     content = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
-# Add likes here 
+# Add likes here
+
     def render(self):
         self._render_text = self.content.replace('\n', '<br>')
         return render_str("post.html", p=self)
