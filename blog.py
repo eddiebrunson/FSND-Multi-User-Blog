@@ -89,7 +89,8 @@ def render_post(response, post):
 ##########################
 
 # Add post and likes db code here
- class MainPage(BlogHandler):
+
+class MainPage(BlogHandler):
 
    def get(self):
        if self.user:
