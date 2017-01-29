@@ -1,4 +1,4 @@
-# Working file 2/28/17
+# My working file 2/28/17
 import os
 import re
 import random
@@ -11,6 +11,7 @@ import jinja2
 
 from google.appengine.ext import db
 
+# This is template loading code
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
@@ -22,9 +23,13 @@ def render_str(template, **params):
     t = jinja_env.get_template(template)
     return t.render(params)
 
+# This function is used to make a secure val and then hmac of that val
+
 
 def make_secure_val(val):
     return '%s|%s' % (val, hmac.new(secret, val).hexdigest())
+
+# This function checks to make sure the secure val is valid
 
 
 def check_secure_val(secure_val):
@@ -32,9 +37,9 @@ def check_secure_val(secure_val):
     if secure_val == make_secure_val(val):
         return val
 
-########################
-##### Parent Class #####
-########################
+##########################
+###### Parent Class ######
+##########################
 
 # This is the parent class for all handlers
 
@@ -78,17 +83,29 @@ def render_post(response, post):
     response.out.write('<b>' + post.subject + '</b><br>')
     response.out.write(post.content)
 
+##########################
+######### END OF #########
+###### PARENT CLASS ######
+##########################
 
-# class MainPage(BlogHandler):
-#
-#   def get(self):
-#        self.write('Hello, Udacity!')
+# Add post and likes db code here
+ class MainPage(BlogHandler):
+
+   def get(self):
+       if self.user:
+        self.render('front.html',
+                    posts=posts,
+                    loggedIn=self.user)
+    else:
+        self.redirect('/signup')
 
 #######################################
 ##### USER SECURITY & VALIDATIONS #####
 #######################################
 
 # This fuction makes a string of 5 letters, which makes the salt #
+
+
 def make_salt(length=5):
     return ''.join(random.choice(letters) for x in xrange(length))
 
@@ -112,25 +129,50 @@ def valid_pw(name, password, h):
     salt = h.split(',')[0]
     return h == make_pw_hash(name, password, salt)
 
+# This creates the ancesteor elements in the datatbase to store all of our
+# users
+
+#########################################
+################# END OF ################
+###### USER SECURITY & VALIDATIONS ######
+#########################################
+
 
 def users_key(group='default'):
     return db.Key.from_path('users', group)
 
+#########################
+###### USER OBJECT ######
+#########################
+
+# This is the user object to store in the database
+
 
 class User(db.Model):
+    # These three parameters name, pw_hash, and email are required
     name = db.StringProperty(required=True)
     pw_hash = db.StringProperty(required=True)
     email = db.StringProperty()
 
+    # This is a decorator, which is used to call the method on this object
+    # In other words it calls methods on this class user
+    # So in this case it takes user.byid, gives it an ID, and then calls
+    # getbyid function to load the user onto the database
     @classmethod
     def by_id(cls, uid):
         return User.get_by_id(uid, parent=users_key())
+
+    # This decorator, which uses the function by_name, which looks up a user
+    # by its name
 
     @classmethod
     def by_name(cls, name):
         u = User.all().filter('name =', name).get()
         return u
 
+    # This decorator, uses the method register, which takes a name, password,
+    # and email to creat a new user object. It creates a password hash for
+    # that username and password and creates a user object
     @classmethod
     def register(cls, name, pw, email=None):
         pw_hash = make_pw_hash(name, pw)
@@ -157,7 +199,7 @@ class Post(db.Model):
     content = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
-
+# Add likes here 
     def render(self):
         self._render_text = self.content.replace('\n', '<br>')
         return render_str("post.html", p=self)
@@ -221,24 +263,46 @@ class NewPost(BlogHandler):
 #
 #        self.render('rot13-form.html', text = rot13)
 
+#########################################
+###### USER INFORMATION VALIDATION ######
+#########################################
 
+# This expression checks if username is a-z, 0-9, between 3-20 characters
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+
+# This function checks if there is a username and if it matches this
+# regular expression, return true
 
 
 def valid_username(username):
     return username and USER_RE.match(username)
 
+# This expression checks if the password is between 3-20 characters
 PASS_RE = re.compile(r"^.{3,20}$")
+
+# This function checks if there is a password and if it matches this
+# regular expression, return true
 
 
 def valid_password(password):
     return password and PASS_RE.match(password)
 
+# This expression checks if the email has characters, then an "@", then
+# characters, then a ".", then a more characters
+
 EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
+
+# This function checks if there is a email and if it matches this regular
+# expression, return true
 
 
 def valid_email(email):
     return not email or EMAIL_RE.match(email)
+
+#########################################
+############## END OF ###################
+###### USER INFORMATION VALIDATION ######
+#########################################
 
 
 class Signup(BlogHandler):
@@ -256,6 +320,11 @@ class Signup(BlogHandler):
         params = dict(username=self.username,
                       email=self.email)
 
+        # u = User.by_name(self.username)
+        # if u:
+        # params['error_username1'] = "Username Already Exists"
+        # errors = True
+
         if not valid_username(self.username):
             params['error_username'] = "That's not a valid username."
             have_error = True
@@ -264,7 +333,7 @@ class Signup(BlogHandler):
             params['error_password'] = "That wasn't a valid password."
             have_error = True
         elif self.password != self.verify:
-            params['error_verify'] = "Your passwords didn't match."
+            params['error_verify'] = "Your passwords did not match."
             have_error = True
 
         if not valid_email(self.email):
@@ -279,11 +348,13 @@ class Signup(BlogHandler):
     def done(self, *a, **kw):
         raise NotImplementedError
 
+# Remove thi sign up ?Q
+# class Unit2Signup(Signup):
 
-class Unit2Signup(Signup):
+    # def done(self):
+        # self.redirect('/unit2/welcome?username=' + self.username)
 
-    def done(self):
-        self.redirect('/unit2/welcome?username=' + self.username)
+# This handler inherits from the class Signup
 
 
 class Register(Signup):
@@ -335,15 +406,19 @@ class Unit3Welcome(BlogHandler):
         else:
             self.redirect('/signup')
 
+# Remove this one ?
+# class Welcome(BlogHandler):
 
-class Welcome(BlogHandler):
+#    def get(self):
+#        username = self.request.get('username')
+#        if valid_username(username):
+#            self.render('welcome.html', username=username)
+#        else:
+#            self.redirect('/unit2/signup')
 
-    def get(self):
-        username = self.request.get('username')
-        if valid_username(username):
-            self.render('welcome.html', username=username)
-        else:
-            self.redirect('/unit2/signup')
+##########################
+###### APP HANDLERS ######
+##########################
 
 app = webapp2.WSGIApplication([('/', MainPage),
                                #('/unit2/rot13', Rot13),
