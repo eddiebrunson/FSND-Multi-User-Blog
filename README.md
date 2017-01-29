@@ -10,7 +10,7 @@ ___
 
 ## To Set up and Run
 
-# Locally 
+### Locally 
 
 * Clone of download this repository 
 
@@ -73,7 +73,7 @@ ___
 
 ---
 
-# Sources
+## Sources
 
 * Udacity Discussion Board
 * [Pep8 Python Style Guide](https://www.python.org/dev/peps/pep-0008/)
@@ -86,7 +86,7 @@ ___
 
 
 ---
-# Planned Improvements
+## Planned Improvements
 
 * Improve the Front End styling of the blog
 
