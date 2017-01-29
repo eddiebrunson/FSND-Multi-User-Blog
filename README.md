@@ -15,12 +15,10 @@ ___
 * Clone of download this repository 
 
 
-* Ensure you have or download Python 
-
-     [Download Python here](https://www.python.org/downloads/)
+* Ensure you have or download Python [Download Python here](https://www.python.org/downloads/)
 * [Install Google App Engine SDK](https://cloud.google.com/appengine/docs/python/download)
 
-*[Sign Up for a Google App Engine Account(Free)](https://cloud.google.com/appengine/)
+* [Sign Up for a Google App Engine Account(Free)](https://cloud.google.com/appengine/)
 
 * Create a new project in Google's Developer Console using a unique name
 
@@ -49,17 +47,19 @@ ___
 
 ### The Multi User Blog Welcome View
 
-![](.png)
+![](.png) Under Construction 
 
 ### The Multi User Blog User Registration View
 
-![](.png)
+![](.png) Under Construction
 
 ### The Multi User Blog Login View 
 
-![](.png)
+![](.png) Under Construction
 
 ### The Multi User Blog Log out View
+ 
+![](.png) Under Construction
 
 
 
@@ -88,5 +88,6 @@ ___
 ---
 # Planned Improvements
 
-*Make better 
+* Improve the Front End styling of the blog
+
 
