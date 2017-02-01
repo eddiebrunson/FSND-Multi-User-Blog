@@ -90,14 +90,16 @@ def render_post(response, post):
 
 # Add post and likes db code here
 
-# Working to fix error 
+# Working to fix error
+
+
 class MainPage(BlogHandler):
 
     def get(self):
         if self.user:
             self.render('front.html')
-                        #posts=posts,
-                        #loggedIn=self.user)
+            # posts=posts,
+            # loggedIn=self.user)
         else:
             self.redirect('/signup')
 
