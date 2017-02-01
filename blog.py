@@ -90,7 +90,7 @@ def render_post(response, post):
 
 # Add post and likes db code here
 
-
+# Working to fix error 
 class MainPage(BlogHandler):
 
     def get(self):
