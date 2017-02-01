@@ -95,9 +95,9 @@ class MainPage(BlogHandler):
 
     def get(self):
         if self.user:
-            self.render('front.html',
-                        posts=posts,
-                        loggedIn=self.user)
+            self.render('front.html')
+                        #posts=posts,
+                        #loggedIn=self.user)
         else:
             self.redirect('/signup')
 
