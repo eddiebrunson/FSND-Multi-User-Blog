@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Udacity Blog Project</title>
+    <title>{% block title %}{% end block %}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -22,9 +22,9 @@
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <a href="/blog" class="main-title">
+   <!-- <a href="/blog" class="main-title"> 
     Udacity Blog Project
-    </a>
+    </a> -->
 
     <div class="login-area">
         {% if user %}
