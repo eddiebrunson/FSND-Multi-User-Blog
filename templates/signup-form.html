@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-
 {% block title %}Sign Up{% endblock %}
 {% block body %}
 
+<div class="login-area" style="width: 50%;">
     <h1>Signup</h1>
     <form method="post">
       <table>
@@ -11,7 +11,7 @@
             Username
           </td>
           <td>
-            <input type="text" name="username" value="{{username}}">
+            <input type="text" name="username" placeholder="Username" value="{{username}}">
           </td>
           <td class="error">
             {{error_username}}
@@ -23,7 +23,7 @@
             Password
           </td>
           <td>
-            <input type="password" name="password" value="">
+            <input type="password" name="password" placeholder="Password" value="">
           </td>
           <td class="error">
             {{error_password}}
@@ -35,7 +35,7 @@
             Verify Password
           </td>
           <td>
-            <input type="password" name="verify" value="">
+            <input type="password" name="verify" placeholder="Verify Password" value="">
           </td>
           <td class="error">
             {{error_verify}}
@@ -47,7 +47,7 @@
             Email (optional)
           </td>
           <td>
-            <input type="text" name="email" value="{{email}}">
+            <input type="text" name="email" placeholder="Email" value="{{email}}">
           </td>
           <td class="error">
             {{error_email}}
@@ -55,7 +55,8 @@
         </tr>
       </table>
 
-      <input type="submit">
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+</div>
   
 {% endblock %}
