@@ -31,8 +31,9 @@
         {{user.name}} (<a class="login-link" href="/logout">logout</a>)
         (<a href="/blog/newpost">New Post</a>)
       {% else %}
-        <a href="/login">login</a>
-        <a href="/signup">Sign Up</a>  
+        <a class="login-link" href="/login">login</a>
+        |
+        <a class="login-link" href="/signup">Sign Up</a>  
       {% endif %}
     </div>
 
