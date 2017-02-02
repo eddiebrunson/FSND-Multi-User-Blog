@@ -1,4 +1,4 @@
-# My working file 2/28/17
+# My working file 2/01/17
 import os
 import re
 import random
@@ -197,17 +197,20 @@ class User(db.Model):
 def blog_key(name='default'):
     return db.Key.from_path('blogs', name)
 
-
+# Add user or authorname
 class Post(db.Model):
     subject = db.StringProperty(required=True)
     content = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
-# Add likes here
 
+# Add likes here
+                      
     def render(self):
         self._render_text = self.content.replace('\n', '<br>')
         return render_str("post.html", p=self)
+
+# Add comment model here 
 
 
 class BlogFront(BlogHandler):
