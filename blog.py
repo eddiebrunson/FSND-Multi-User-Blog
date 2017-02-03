@@ -1,4 +1,7 @@
-# My working file 2/01/17
+# My working file 2/03/17
+# Focus on building permissions
+# Focus on building likes, Edit, delete, comments
+# Focus on updating templates 
 import os
 import re
 import random
@@ -96,10 +99,11 @@ def render_post(response, post):
 class MainPage(BlogHandler):
 
     def get(self):
+        post = db.GqlQuery("SELECT * FROM Post ORDER BY Likes DESC LIMIT 10")
         if self.user:
-            self.render('front.html')
-            # posts=posts,
-            # loggedIn=self.user)
+            self.render('front.html',
+                        posts=posts,
+                        loggedIn=self.user)
         else:
             self.redirect('/signup')
 
@@ -192,32 +196,66 @@ class User(db.Model):
             return u
 
 
-# blog stuff
+#################################
+####### BLOG FUNCTIONALITY ######
+#################################
 
 def blog_key(name='default'):
     return db.Key.from_path('blogs', name)
 
 # Add user or authorname
+
+
 class Post(db.Model):
     subject = db.StringProperty(required=True)
     content = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
+    likes = db.IntegerProperty(default=0)
+    liked = db.StringProperty()
+    author = db.StringProperty()
 
-# Add likes here
-                      
     def render(self):
         self._render_text = self.content.replace('\n', '<br>')
-        return render_str("post.html", p=self)
+        return render_str('post.html', p=self, loggedIn=loggedIn)
 
-# Add comment model here 
+
+class Comment(db.Model):
+    comment = db.TextProperty(required=True)
+    author = db.StringProperty()
+    created = db.DateTimeProperty(auto_now_add=True)
+    last_modified = db.DateTimeProperty(auto_now=True)
+    comment_key = db.StringProperty(required=True)
+
+    def render(self, loggedIn):
+        self._render_text = self.content.replace('\n', '<br>')
+        return render_str('post.html', p=self, loggedIn=loggedIn)
+
+# Displays post and comments
 
 
 class BlogFront(BlogHandler):
 
     def get(self):
         posts = greetings = Post.all().order('-created')
-        self.render('front.html', posts=posts)
+        comments = Comment.all().order('created')
+        if self.user:
+        self.render('front.html',
+                    posts=posts,
+                    comments=comments,
+                    loggedIn=loggedIn)
+    else:
+        self.redirect('/signup')
+
+    # To submit comments
+    def post(self):
+        comment_key = int(p.key().id())
+        comment = self.request.get('comment')
+        author = str(self.user.name)
+
+        if comment:
+            c = Comment(parent=blog_key(), comment=comment,
+                        author=author, comment_key=comment_key)
 
 
 class PostPage(BlogHandler):
@@ -225,51 +263,171 @@ class PostPage(BlogHandler):
     def get(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)
+        comments = Comment.all().order('created')
 
         if not post:
             self.error(404)
             return
 
-        self.render("permalink.html", post=post)
+        self.render("permalink.html", post=post, comments=comments)
+
+    def post(self, post_id):
+        comments = self.request.get('comment')
+        author = self.user.name
+
+        if comment:
+            c = Comment(author=author,
+                        post_id=post_id,
+                        comment=comment,
+                        comment_key=comment_key)
+            c.put()
+            self.redirect('/blog/%s' % str(comment_key))
+        else:
+            error = 'Please Comment!'
+            self.render('permalink.html', comment=comment)
+
+# Creates new post
 
 
 class NewPost(BlogHandler):
 
     def get(self):
         if self.user:
-            self.render("newpost.html")
+            self.render('newpost.html', loggedIn=self.user)
         else:
-            self.redirect("/login")
+            self.redirect('/')
 
     def post(self):
         if not self.user:
-            self.redirect('/blog')
-
-        subject = self.request.get('subject')
-        content = self.request.get('content')
-
-        if subject and content:
-            p = Post(parent=blog_key(), subject=subject, content=content)
-            p.put()
-            self.redirect('/blog/%s' % str(p.key().id()))
+            self.redirect('/login')
         else:
-            error = "subject and content, please!"
-            self.render(
-                "newpost.html", subject=subject, content=content, error=error)
+            author = self.user.name
+            subject = self.request.get('subject')
+            content = self.request.get('content')
+            likes = []
+
+            if subject and content:
+                p = Post(parent=blog_key(), subject=subject, content=content,
+                         author=author)
+                p.put()
+                self.redirect('/blog/%s' % str(p.key().id()))
+            else:
+                error = "Please add subject and content!"
+                self.render('newpost.html', subject=subject,
+                            content=content, error=error, author=author,
+                            loggedIn=self.user)
 
 
-# Unit 2 HW's
-# class Rot13(BlogHandler):
-#    def get(self):
-#        self.render('rot13-form.html')
-#
-#    def post(self):
-#        rot13 = ''
-#        text = self.request.get('text')
-#        if text:
-#            rot13 = text.encode('rot13')
-#
-#        self.render('rot13-form.html', text = rot13)
+class NewComment(BlogHandler):
+
+    def get(self, post_id):
+        key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+        post = db.get((key))
+        if not self.user:
+            self.redirect('/login')
+        else:
+            comments = db.GqlQuery('SELECT * FROM Comment ' +
+                                   'WHERE post_id = :1' +
+                                   'ORDER BY created DESC',
+                                   post_id)
+            self.render('newcomment.html',
+                        post=post,
+                        comments=comments,
+                        loggedIn=self.user)
+
+    def post(self, post_id)
+        if not self.user:
+            self.redirect('/login')
+        else:
+            posts = db.GqlQuery(
+                'SELECT * FROM Post ORDER BY likes DESC LIMIT 10')
+            comment = self.request.get('comment')
+            author = self.user.name
+
+            if comment:
+                c = Comment(post_id=post_id,
+                            author=author,
+                            comment=comment)
+                c.put()
+            self.render('front.html', posts=post, loggedIn=self.user)
+
+
+# Edit post
+
+
+class EditPost(BlogHandler):
+
+    def get(self):
+        if not self.user:
+            self.redirect('/login')
+        else:
+            post_id = self.request.get('id')
+            key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+            post = db.get(key)
+
+            if self.user.name == post.author:
+                self.render('editpost.html', p=post, loggedIn=self.user)
+            else:
+                msg = "Sorry, you are not allowed to edit this post."
+                self.render('message.html', msg=msg)
+    def post(self):
+        post_id = self.request.get('id')
+        key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+        p = db.get(key)
+
+        if self.user.name != p.author:
+            self.redirect('/login')
+        else:
+            new_content = self.request.get('editpost')
+            if new_post:
+                p.content = new_content
+                p.put()
+                self.redirect('/')
+            else: 
+                error = "Please, fill in content."
+                self.render('editpost.html', p=p, error=error)
+
+# Delete post
+
+
+class Delete(BlogHandler):
+    def get(self):
+        if not self.user:
+            self.redirect('/login')
+        else:
+            post_id = self.request.get('id')
+            key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+            post = db.get(key)
+
+            if self.user.name == post.author:
+                db.delete(key)
+                self.redirect('/')
+            else:
+                self.redirect('/')
+
+
+
+# Edit comment
+
+
+class EditComment(BlogHandler):
+
+# Delete comment
+
+
+class DeleteComment(BlogHandler):
+
+
+# Like a post
+
+class Like(BlogHandler):
+
+
+###########################
+###### END OF BLOG ########
+###### FUNCTIONALITY ######
+###########################
+
 
 #########################################
 ###### USER INFORMATION VALIDATION ######
@@ -356,11 +514,6 @@ class Signup(BlogHandler):
     def done(self, *a, **kw):
         raise NotImplementedError
 
-# Remove thi sign up ?Q
-# class Unit2Signup(Signup):
-
-    # def done(self):
-        # self.redirect('/unit2/welcome?username=' + self.username)
 
 # This handler inherits from the class Signup
 
@@ -414,24 +567,15 @@ class Unit3Welcome(BlogHandler):
         else:
             self.redirect('/signup')
 
-# Remove this one ?
-# class Welcome(BlogHandler):
-
-#    def get(self):
-#        username = self.request.get('username')
-#        if valid_username(username):
-#            self.render('welcome.html', username=username)
-#        else:
-#            self.redirect('/unit2/signup')
 
 ##########################
 ###### APP HANDLERS ######
 ##########################
 
 app = webapp2.WSGIApplication([('/', MainPage),
-                               #('/unit2/rot13', Rot13),
-                               #'/unit2/signup', Unit2Signup),
-                               #('/unit2/welcome', Welcome),
+                               ('/editpost', EditPost),
+                               ('/newcomment', NewComment),
+                               ('/message', message),
                                ('/blog/?', BlogFront),
                                ('/blog/([0-9]+)', PostPage),
                                ('/blog/newpost', NewPost),
