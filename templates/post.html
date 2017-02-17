@@ -1,15 +1,23 @@
-<div class="post">
-  <div class="post-heading">
-    <div class="post-title">
-      {{p.subject}}
-    </div>
-
-    <div class="post-date">
-      {{p.created.strftime("%b %d, %Y")}}
-    </div>
-  </div>
-
-  <div class="post-content">
+<h3>{{p.subject}}</h3>
+<h5>Posted by {{p.author}}</h5>
+<h6>{{p.created.strftime("%b %d, %Y %H:%M:%S")}}</h6>
+<div class="post-content">
     {{p._render_text | safe}}
-  </div>
+    <br>
+    <br>
+    <div class="post">
+        <div class="likes">
+            <p>
+                {% if loggedIn.name == p.author %}
+                <img class="like" src="/static/img/like.png">
+                <span class="imglike"></span> {{p.likes}}
+                <a href="/edit?id={{p.key().id()}}"><img src="/static/img/edit_icon.png" class="Edit_post" alt="Edit"></a>
+                <a href="/delete?id={{p.key().id()}}"><img src="/static/img/trash.png" alt="Delete"></a>
+                {% else %}
+                <a href=/like?id={{p.key().id()}}><img src="/static/img/like.png" alt="Like"></a>
+                {{p.likes}}
+                <a href="/comment/{{p.key().id()}}" class="btn btn-primary">Comment</a> {% endif %}
+            </p>
+        </div>
+    </div>
 </div>

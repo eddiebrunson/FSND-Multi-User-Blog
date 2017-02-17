@@ -1,10 +1,11 @@
-{% extends "base.html" %}
-
-{% block content %}
-
-  {% for p in posts %}
-    {{ p.render() | safe }}
-    <br><br>
-  {% endfor %}
-
-{% endblock %}
+{% extends 'base.html' %} {% block content %} {% if posts.count() == 0 %}
+<div class="container" style="width: 50%">
+    <h1>Please, be the first to post!</h1>
+</div>
+{% else %} {% for p in posts %}
+<div class="container" style="width: 50%">
+    {{ p.render(loggedIn) | safe }}
+    <br>
+    <br>
+</div>
+{% endfor %} {% endif %} {% endblock %}

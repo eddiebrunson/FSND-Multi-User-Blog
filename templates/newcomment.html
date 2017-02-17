@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block title %}Write a Comment{% endblock %} {% block content %}
+<div class="container" style="width: 40%">
+    <div>
+        <h3>{{post.subject}}</h3>
+        <h5>Posted by {{post.author}}</h5>
+        <h5>{{post.created.strftime("%b %d, %Y %H:%M:%S")}}</h5>
+        <div>
+            {{post.content}}
+        </div>
+        <div>
+            <form method="post">
+                <div class="form-group {% if error %}has-error{% endif %}">
+                    <label>Add Comment</label>
+                    <textarea class="form-control" name="comment" placeholder="Comment"></textarea>
+                    {% if error %}
+                    <br>
+                    <label class="control-label">{{error}}</label>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <br>
+        <div>
+            {% if comments %} {% for comment in comments %} {% if loggedIn.name == comment.author %} {% endif %}
+            <div class="comment-post">
+                <p class="author">
+                    Posted by {{comment.author}}
+                </p>
+                <div class="comment-box">
+                    <p>{{comment.comment}}</p>
+                </div>
+                <a href="/editcomment?id={{comment.key().id()}}"><img src="/static/img/edit_icon.png" alt="Edit"></a>
+                <a href="/deletecomment?id={{comment.key().id()}}"><img src="/static/img/trash.png" alt="Delete"></a>
+                <div class="comment-time">
+                    <p>{{post.created.strftime("%b %d, %Y %H:%M:%S")}}</p>
+                </div>
+            </div>
+            {% endfor %} {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
