@@ -10,6 +10,7 @@ import string
 import logging
 import webapp2
 import jinja2
+from secret import secret
 
 
 from google.appengine.ext import db
@@ -18,8 +19,7 @@ from google.appengine.ext import db
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
-# This secret string is used as the hash secret for cookies
-secret = 'PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS'
+
 
 
 def render_str(template, **params):
@@ -509,21 +509,19 @@ class Signup(BlogHandler):
 
         u = User.by_name(self.username)
         if u:
-            params['error_username_exists'] = "That user name already exists."
+            params['error_username_exists'] = "That username already exists."
             have_error = True
 
         if not valid_username(self.username):
-            params['error_username_not_vaild'] = "Sorry, that is not a " +
-            "vaild username."
-        have_error = True
+            params['error_username_not_vaild'] = "Sorry, username is invaild."
+            have_error = True
 
         if not valid_password(self.password):
             params['error_password'] = "Sorry, that was not a vaild password."
             have_error = True
         elif self.password != self.verify:
-            params['error_verify'] = "Please, try again the passwords " +
-            "did not match."
-        have_error = True
+            params['error_verify'] = "The passwords do not match, try again."
+            have_error = True
 
         if not valid_email(self.email):
             params['error_email'] = "Sorry, that is not a vaild email."
