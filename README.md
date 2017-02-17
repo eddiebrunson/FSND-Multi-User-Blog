@@ -78,7 +78,8 @@ ___
 * [Jinja2 Documentation](http://jinja.pocoo.org/docs/dev/) 
 * [Google App Engine Quickstart](https://cloud.google.com/appengine/docs/python/quickstart)
 * [Google App Engine Python Standard Environment Documentation](https://cloud.google.com/appengine/docs/python/)
-
+* [Typerwriter.js effect](https://jsfiddle.net/mv612vrf/3/)
+* [Free Favicons](https://www.freefavicon.com/freefavicons/objects/iconinfo/blue-squares-1-152-240544.html)
 
 
 
@@ -88,4 +89,9 @@ ___
 
 * Improve the Front End styling of the blog
 * Add offline support 
+* Improve the User Iterface and User Experience 
+* Add unlike feature 
+* Add facebook login support 
+* Add Google login support 
+* Add a picture jumbotron 
 

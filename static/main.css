@@ -43,3 +43,12 @@ h5 {
     margin: 0px;
     height: 302px;
 }
+
+.typewriter {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    font-style: italic;
+    font-family: cursive;
+    color: blue;
+}
