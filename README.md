@@ -4,7 +4,7 @@
 
 ![](http://progressed.io/bar/90?title=Progress)
 
-The objective of this project was to build a multi user blog (along the lines of Medium) where user can sign in and post blog posts as well as "Like" and "Comment" on other posts made on the blog. The project will be hosted using [Google App Engine](https://cloud.google.com/appengine/), which is a powerful platform by Google to build web and mobile apps that scale automatically. It was also required to create an authentication system for users to be able to register and sign in and then create blog post. 
+The objective of this project was to build a multi user blog (along the lines of Medium) where user can sign in and post blog posts as well as "Like" and "Comment" on other posts made on the blog. The project will be hosted using [Google App Engine](https://cloud.google.com/appengine/), which is a powerful platform by Google to build web and mobile apps that scale automatically. It was also required to create an authentication system for users to be able to signup and login and then create blog post. 
 
 ___
 
