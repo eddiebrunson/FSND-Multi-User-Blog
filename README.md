@@ -47,7 +47,7 @@ ___
 
 ### The Multi User Blog Welcome Page
 
-![](SS_Welcome_page.png)  
+![](SS_Welcome_Page.png)  
 
 ### The Multi User Blog User Signup Page
 
@@ -61,6 +61,9 @@ ___
  
 ![](SS_Blog_View.png) 
 
+### The Multi User Blog New Post Page
+
+![](SS_New_Post.png)
 
 
 
