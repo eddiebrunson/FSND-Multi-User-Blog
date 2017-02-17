@@ -1,7 +1,6 @@
-# My working file 2/13/17
+# My working file 2/17/17
 # Focus on Front end improvements
 # Add favicon image
-# Learn Google Analytics 
 import os
 import re
 import random
@@ -42,7 +41,7 @@ def check_secure_val(secure_val):
         return val
 
 ##########################
-###### Parent Class ######
+#      Parent Class      #
 ##########################
 
 # This is the parent class for all handlers
@@ -84,8 +83,8 @@ class BlogHandler(webapp2.RequestHandler):
 
 
 ##########################
-######### END OF #########
-###### PARENT CLASS ######
+#         END OF         #
+#        PARENT CLASS    #
 ##########################
 
 # Add post and likes db code here
@@ -95,14 +94,14 @@ class MainPage(BlogHandler):
     def get(self):
         posts = db.GqlQuery("SELECT * FROM Post ORDER BY Likes DESC LIMIT 10")
         if self.user:
-           self.render('front.html',
-                    posts=posts,
-                    loggedIn=self.user)
+            self.render('front.html',
+                        posts=posts,
+                        loggedIn=self.user)
         else:
             self.redirect('/signup')
 
 #######################################
-##### USER SECURITY & VALIDATIONS #####
+#     USER SECURITY & VALIDATIONS     #
 #######################################
 
 # This fuction makes a string of 5 letters, which makes the salt #
@@ -135,8 +134,8 @@ def valid_pw(name, password, h):
 # users
 
 #########################################
-################# END OF ################
-###### USER SECURITY & VALIDATIONS ######
+#               END OF                  #
+#      USER SECURITY & VALIDATIONS      #
 #########################################
 
 
@@ -144,7 +143,7 @@ def users_key(group='default'):
     return db.Key.from_path('users', group)
 
 #########################
-###### USER OBJECT ######
+#      USER OBJECT      #
 #########################
 
 # This is the user object to store in the database
@@ -191,7 +190,7 @@ class User(db.Model):
 
 
 #################################
-####### BLOG FUNCTIONALITY ######
+#       BLOG FUNCTIONALITY      #
 #################################
 
 def blog_key(name='default'):
@@ -220,24 +219,19 @@ class Comment(db.Model):
     created = db.DateTimeProperty(auto_now=True)
     post_id = db.StringProperty(required=True)
 
-    # def render(self, loggedIn):
-    #self._render_text = self.content.replace('\n', '<br>')
-    # return render_str('post.html', p=self, loggedIn=loggedIn)
-
 # Displays post and comments
 
 
 class BlogFront(BlogHandler):
 
     def get(self):
-        #posts = greetings = Post.all().order('-created')
         posts = db.GqlQuery("SELECT * FROM Post ORDER BY likes DESC LIMIT 10")
         comments = Comment.all().order('created')
         if self.user:
-           self.render('front.html',
-                    posts=posts,
-                    comments=comments,
-                    loggedIn=self.user)
+            self.render('front.html',
+                        posts=posts,
+                        comments=comments,
+                        loggedIn=self.user)
         else:
             self.redirect('/signup')
 
@@ -259,7 +253,6 @@ class NewPost(BlogHandler):
             author = self.user.name
             subject = self.request.get('subject')
             content = self.request.get('content')
-            #likes = []
 
             if subject and content:
                 p = Post(parent=blog_key(), subject=subject, content=content,
@@ -268,13 +261,13 @@ class NewPost(BlogHandler):
                 post_id = str(p.key().id())
                 self.key = post_id
                 self.redirect('/blog')
-                #self.redirect('/blog/%s' % str(p.key().id()))
             else:
                 error = "Please add subject and content!"
                 self.render('newpost.html', subject=subject,
                             content=content, error=error, author=author,
                             loggedIn=self.user)
 # New comment
+
 
 class NewComment(BlogHandler):
 
@@ -445,16 +438,17 @@ class Like(BlogHandler):
 
 
 ###########################
-###### END OF BLOG ########
-###### FUNCTIONALITY ######
+#        END OF BLOG      #
+#       FUNCTIONALITY     #
 ###########################
 
 
 #########################################
-###### USER INFORMATION VALIDATION ######
+#       USER INFORMATION VALIDATION     #
 #########################################
 
-# This regular expression checks if username is a-z, 0-9, between 3-20 characters
+# This regular expression checks if username is a-z, 0-9, between 3-20
+# characters
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 
 # This function checks if there is a username and if it matches this
@@ -487,12 +481,12 @@ def valid_email(email):
     return not email or EMAIL_RE.match(email)
 
 #########################################
-############## END OF ###################
-###### USER INFORMATION VALIDATION ######
+#               END OF                  #
+#     USER INFORMATION VALIDATION       #
 #########################################
 
 #########################
-###### USER STATE #######
+#       USER STATE      #
 #########################
 
 
@@ -502,8 +496,8 @@ class Signup(BlogHandler):
         self.render("signup-form.html")
 
     def post(self):
-        # This post variable checks if the function returns false then it will render
-        # the success page and take the new user to the blog welcome. 
+        # This post variable checks if the function returns false then it will
+        # render the success page and take the new user to the blog welcome.
         have_error = False
         self.username = self.request.get('username')
         self.password = self.request.get('password')
@@ -519,17 +513,17 @@ class Signup(BlogHandler):
             have_error = True
 
         if not valid_username(self.username):
-            params[
-                'error_username_not_vaild'] = "Sorry, that is not a vaild username."
-            have_error = True
+            params['error_username_not_vaild'] = "Sorry, that is not a " +
+            "vaild username."
+        have_error = True
 
         if not valid_password(self.password):
             params['error_password'] = "Sorry, that was not a vaild password."
             have_error = True
         elif self.password != self.verify:
-            params[
-                'error_verify'] = "Please, try again the passwords did not match."
-            have_error = True
+            params['error_verify'] = "Please, try again the passwords " +
+            "did not match."
+        have_error = True
 
         if not valid_email(self.email):
             params['error_email'] = "Sorry, that is not a vaild email."
@@ -589,13 +583,13 @@ class Logout(BlogHandler):
 
 
 #########################
-###### END OF USER ######
-######## STATE ##########
+#     END OF USER       #
+#        STATE          #
 #########################
 
 
 ##########################
-###### APP HANDLERS ######
+#      APP HANDLERS      #
 ##########################
 
 app = webapp2.WSGIApplication([('/', MainPage),
