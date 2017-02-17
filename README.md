@@ -12,7 +12,7 @@ ___
 
 ### Locally 
 
-* Clone of download this repository 
+* [Clone or download this repository](https://github.com/eddiebrunson/FSND-Multi-User-Blog.git)
 
 
 * Ensure you have or download Python [Download Python here](https://www.python.org/downloads/)
@@ -32,11 +32,9 @@ ___
 
 
 
+### To Run in the Browser 
 
-
-
-
-
+*[Click here for a live demo of this project]()
 
 
 
@@ -67,13 +65,6 @@ ___
 
 
 
-
-
-
-
-
-
-
 ---
 
 ## Sources
@@ -87,8 +78,6 @@ ___
 * [Jinja2 Documentation](http://jinja.pocoo.org/docs/dev/) 
 * [Google App Engine Quickstart](https://cloud.google.com/appengine/docs/python/quickstart)
 * [Google App Engine Python Standard Environment Documentation](https://cloud.google.com/appengine/docs/python/)
-
-
 
 
 
