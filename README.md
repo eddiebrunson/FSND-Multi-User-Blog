@@ -81,6 +81,12 @@ ___
 * Udacity Discussion Board
 * [Pep8 Python Style Guide](https://www.python.org/dev/peps/pep-0008/)
 * [Udacity's Intro to Backend Course](https://www.udacity.com/course/intro-to-backend--ud171)
+* Pep8 Python Style Guide 
+* Multi User Blog: Getting Started Guide
+* [Fellow Udacity Students Project from the Discussion Board](https://github.com/jensbackvall/UdacityFullStackND/tree/master/P2-Multi-User-Blog)
+* [Jinja2 Documentation](http://jinja.pocoo.org/docs/dev/) 
+* [Google App Engine Quickstart](https://cloud.google.com/appengine/docs/python/quickstart)
+* [Google App Engine Python Standard Environment Documentation](https://cloud.google.com/appengine/docs/python/)
 
 
 
@@ -92,5 +98,5 @@ ___
 ## Planned Improvements
 
 * Improve the Front End styling of the blog
-
+* Add offline support 
 
