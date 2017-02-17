@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-![](http://progressed.io/bar/50?title=Progress)
+![](http://progressed.io/bar/90?title=Progress)
 
 The objective of this project was to build a multi user blog (along the lines of Medium) where user can sign in and post blog posts as well as "Like" and "Comment" on other posts made on the blog. The project will be hosted using [Google App Engine](https://cloud.google.com/appengine/), which is a powerful platform by Google to build web and mobile apps that scale automatically. It was also required to create an authentication system for users to be able to register and sign in and then create blog post. 
 
@@ -45,21 +45,21 @@ ___
 
 ## Screenshots
 
-### The Multi User Blog Welcome View
+### The Multi User Blog Welcome Page
 
-![](.png) Under Construction 
+![](SS_Welcome_page.png)  
 
-### The Multi User Blog User Registration View
+### The Multi User Blog User Signup Page
 
-![](.png) Under Construction
+![](SS_Signup.png) 
 
-### The Multi User Blog Login View 
+### The Multi User Blog Login Page
 
-![](.png) Under Construction
+![](SS_Login.png) 
 
-### The Multi User Blog Log out View
+### The Multi User Blog Posts View Page
  
-![](.png) Under Construction
+![](SS_Blog_View.png) 
 
 
 
