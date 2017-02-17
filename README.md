@@ -34,9 +34,7 @@ ___
 
 ### To Run in the Browser 
 
-*[Click here for a live demo of this project]()
-
-
+*[Click here for a live demo of this project](https://udacityblog19192020.appspot.com/signup)
 
 
 ___
